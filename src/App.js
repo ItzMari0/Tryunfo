@@ -13,7 +13,7 @@ class App extends React.Component {
       cardAttr2: '',
       cardAttr3: '',
       cardImage: '',
-      cardRare: '',
+      cardRare: 'normal',
       cardTrunfo: false,
       hasTrunfo: false,
       isSaveButtonDisabled: true,
@@ -76,12 +76,18 @@ class App extends React.Component {
         cardAttr2: '0',
         cardAttr3: '0',
         cardImage: '',
-        cardRare: '',
+        cardRare: 'normal',
         cardTrunfo: false,
-        hasTrunfo: false,
+        isSaveButtonDisabled: true,
       });
-      // this.hasTrunfo();
+      this.superTrunfo();
     });
+  };
+
+  superTrunfo = () => {
+    const { savedCards } = this.state;
+    const hasTrunfo = savedCards.some((card) => card.cardTrunfo);
+    this.setState({ hasTrunfo });
   };
 
   render() {
