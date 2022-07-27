@@ -104,6 +104,10 @@ class App extends React.Component {
     this.setState({ filter: event.target.value });
   }
 
+  // setSelectValue =(event) => {
+  //   this.setState({ filterRarity: event.target.value });
+  // }
+
   render() {
     const {
       cardName,
@@ -119,8 +123,9 @@ class App extends React.Component {
       savedCards, filter, filterRarity } = this.state;
 
     // const filterByName = (filterRarity === 'todas' ? savedCards
-    //   .filter((card) => card.cardName.includes(filter)) : savedCards
-    //   // O PROBLEMA ESTÁ NA LINHA 137, O .includes(filter) NÃO FUNCIONA PQ O VALOR DE filter é ''
+    //   .filter((card) => card.cardRare === 'normal'
+    //   && card.cardRare === 'raro'
+    //   && card.cardRare === 'muito raro') : savedCards
     //   .filter((card) => card.cardName.includes(filter)));
 
     const filterByName = savedCards.filter((card) => card.cardName.includes(filter));
@@ -163,7 +168,9 @@ class App extends React.Component {
           />
           <select
             onChange={ this.setFilterValue }
+            // this.setSelect.Value
             data-testid="rare-filter"
+            name="filterRarity"
             value={ filterRarity }
           >
             <option value="todas">todas</option>
