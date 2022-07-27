@@ -120,12 +120,18 @@ class App extends React.Component {
       cardTrunfo,
       hasTrunfo,
       isSaveButtonDisabled,
-      savedCards, filter, filterRarity } = this.state;
+      savedCards, filter,
+      filterRarity, superTrunfo } = this.state;
 
-    const filterByName = (filterRarity === 'todas')
-      ? savedCards.filter((card) => card.cardName.includes(filter))
-      : savedCards.filter((card) => card.cardRare === filterRarity)
-        .filter((card) => card.cardName.includes(filter));
+    let filterByName = [];
+    if (!superTrunfo) {
+      filterByName = (filterRarity === 'todas')
+        ? savedCards.filter((card) => card.cardName.includes(filter))
+        : savedCards.filter((card) => card.cardRare === filterRarity)
+          .filter((card) => card.cardName.includes(filter));
+    } else {
+      filterByName = savedCards.filter((card) => card.cardTrunfo);
+    }
 
     return (
       <div>
@@ -156,22 +162,37 @@ class App extends React.Component {
         />
         <div>
           <h1>Find Card</h1>
-          <input
-            type="text"
-            onChange={ this.setFilterValue }
-            data-testid="name-filter"
-          />
+          <label htmlFor="input">
+            <input
+              type="text"
+              onChange={ this.setFilterValue }
+              data-testid="name-filter"
+              disabled={ superTrunfo }
+            />
+          </label>
           <select
             onChange={ this.setSelectValue }
             data-testid="rare-filter"
             name="filterRarity"
             value={ filterRarity }
+            disabled={ superTrunfo }
           >
             <option value="todas">todas</option>
             <option value="normal">normal</option>
             <option value="raro">raro</option>
             <option value="muito raro">muito raro</option>
           </select>
+        </div>
+        <div>
+          <label htmlFor="superTrunfo">
+            <input
+              type="checkbox"
+              name="superTrunfo"
+              checked={ superTrunfo }
+              data-testid="trunfo-filter"
+              onChange={ this.onInputChange }
+            />
+          </label>
         </div>
         <div>
           <h1>Card List</h1>
