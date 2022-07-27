@@ -13,12 +13,13 @@ class App extends React.Component {
       cardAttr2: '',
       cardAttr3: '',
       cardImage: '',
-      cardRare: 'normal',
+      cardRare: '',
       cardTrunfo: false,
       hasTrunfo: false,
       isSaveButtonDisabled: true,
       savedCards: [],
       filter: '',
+      filterRarity: 'todas',
     };
   }
 
@@ -115,12 +116,16 @@ class App extends React.Component {
       cardTrunfo,
       hasTrunfo,
       isSaveButtonDisabled,
-      savedCards, filter } = this.state;
+      savedCards, filter, filterRarity } = this.state;
 
-    const filteredCards = savedCards.filter((card) => {
-      const filteredCard = card.cardName;
-      return filteredCard.includes(filter);
-    });
+    // const filterByName = (filterRarity === 'todas' ? savedCards
+    //   .filter((card) => card.cardName.includes(filter)) : savedCards
+    //   // O PROBLEMA ESTÁ NA LINHA 137, O .includes(filter) NÃO FUNCIONA PQ O VALOR DE filter é ''
+    //   .filter((card) => card.cardName.includes(filter)));
+
+    const filterByName = savedCards.filter((card) => card.cardName.includes(filter));
+
+    const filterByRarity = savedCards.filter((card) => card.cardRare === filter);
 
     return (
       <div>
@@ -150,17 +155,47 @@ class App extends React.Component {
           cardTrunfo={ cardTrunfo }
         />
         <div>
-          <h1>Filter</h1>
+          <h1>Find Card</h1>
           <input
             type="text"
             onChange={ this.setFilterValue }
             data-testid="name-filter"
           />
+          <select
+            onChange={ this.setFilterValue }
+            data-testid="rare-filter"
+            value={ filterRarity }
+          >
+            <option value="todas">todas</option>
+            <option value="normal">normal</option>
+            <option value="raro">raro</option>
+            <option value="muito raro">muito raro</option>
+          </select>
         </div>
         <div>
           <h1>Card List</h1>
-          { filteredCards.map((card, index) => (
+          { filterByName.map((card, index) => (
             <div key={ index }>
+              <Card
+                cardName={ card.cardName }
+                cardDescription={ card.cardDescription }
+                cardAttr1={ card.cardAttr1 }
+                cardAttr2={ card.cardAttr2 }
+                cardAttr3={ card.cardAttr3 }
+                cardImage={ card.cardImage }
+                cardRare={ card.cardRare }
+                cardTrunfo={ card.cardTrunfo }
+              />
+              <button
+                type="button"
+                data-testid="delete-button"
+                onClick={ () => this.onDeleteButtonClick(index) }
+              >
+                Excluir
+              </button>
+            </div>))}
+          { filterByRarity.map((card, number) => (
+            <div key={ number }>
               <Card
                 cardName={ card.cardName }
                 cardDescription={ card.cardDescription }
